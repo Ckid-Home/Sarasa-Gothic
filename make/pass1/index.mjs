@@ -25,6 +25,9 @@ async function pass(argv) {
 
 	if (main.head.unitsPerEm !== 1000) CliProc.rebaseFont(main, 1000);
 
+	// Bake tnum for UI
+	if (argv.tnum) bakeFeature("tnum", main, c => c !== 0x2d);
+
 	if (argv.latinCfg?.bakeFeatures) {
 		for (const feature of argv.latinCfg.bakeFeatures) {
 			const filter = feature.range
@@ -42,9 +45,6 @@ async function pass(argv) {
 
 	// Drop enclosed alphanumerics and PUA
 	if (!argv.mono) dropCharacters(main, c => isEnclosedAlphanumerics(c) || isPua(c));
-
-	// Bake tnum for UI
-	if (argv.tnum) bakeFeature("tnum", main, c => c !== 0x2d);
 
 	if (argv.italize) {
 		italize(as, +9.4);
